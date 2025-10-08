@@ -8,6 +8,7 @@ import com.example.lab_week_06.model.CatBreed
 import com.example.lab_week_06.model.CatModel
 import com.example.lab_week_06.model.Gender
 import kotlin.lazy
+import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
     private val recyclerView: RecyclerView by lazy {
@@ -16,7 +17,11 @@ class MainActivity : AppCompatActivity() {
 
     private val catAdapter by lazy {
 //        Glide is used here to load the images
-        CatAdapter(layoutInflater, GlideImageLoader(this))
+        CatAdapter(layoutInflater, GlideImageLoader(this), object:
+            CatAdapter.OnClickListener {
+            //When this is triggered, the pop up dialog will be shown
+            override fun onItemClick(cat: CatModel) = showSelectionDialog(cat)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,4 +63,15 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
+
+    private fun showSelectionDialog(cat: CatModel) {
+        AlertDialog.Builder(this)
+
+            .setTitle("Cat Selected")
+
+            .setMessage("You have selected cat ${cat.name}")
+
+            .setPositiveButton("OK") { _, _ -> }.show()
+    }
+
 }
